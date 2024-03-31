@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
 
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddLogging();
 builder.Services.AddDbContext<StoreContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Connection")));
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<StoreContext>().AddDefaultTokenProviders();
 
 var app = builder.Build();
 
