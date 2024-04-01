@@ -562,3 +562,6 @@
 /Users/hogg/Documents/GitHub/FullStack/Project/obj/Debug/net8.0/Project.pdb
 /Users/hogg/Documents/GitHub/FullStack/Project/obj/Debug/net8.0/Project.genruntimeconfig.cache
 /Users/hogg/Documents/GitHub/FullStack/Project/obj/Debug/net8.0/ref/Project.dll
+/Users/hogg/Documents/GitHub/FullStack/Project/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/Users/hogg/Documents/GitHub/FullStack/Project/bin/Debug/net8.0/MailKit.dll
+/Users/hogg/Documents/GitHub/FullStack/Project/bin/Debug/net8.0/MimeKit.dll
