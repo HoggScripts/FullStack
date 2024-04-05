@@ -22,6 +22,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<RolesController>();
+builder.Services.AddCors(options =>{options.AddPolicy("AllowReactApp",builder =>{builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();});});
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -41,6 +42,7 @@ builder.Services.AddAuthentication(options =>
         };
     });
 var app = builder.Build();
+app.UseCors("AllowReactApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

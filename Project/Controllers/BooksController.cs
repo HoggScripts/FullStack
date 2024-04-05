@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Project.DTOs;
 using Project.Models;
 
 namespace Project.Controllers
@@ -22,30 +23,67 @@ namespace Project.Controllers
             _context = context;
             _logger = logger;
         }
+// GET: api/Books
+[HttpGet]
+public async Task<ActionResult<IEnumerable<BookDetailDTO>>> GetBooks()
+{
+    _logger.LogInformation("Getting all books");
+    var books = await _context.Books
+                              .Include(b => b.BookAuthors)
+                                .ThenInclude(ba => ba.Author)
+                              .Include(b => b.BookGenres)
+                                .ThenInclude(bg => bg.Genre)
+                              .ToListAsync();
 
-        // GET: api/Books
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
-        {
-            _logger.LogInformation("Getting all books");
-            return await _context.Books.ToListAsync();
-        }
+    var bookDetailDTOs = books.Select(book => new BookDetailDTO
+    {
+        BookId = book.BookId,
+        Title = book.Title,
+        Description = book.Description,
+        Price = book.Price,
+        AverageRating = book.AverageRating,
+        ReviewCount = book.ReviewCount,
+        CoverImageUrl = book.CoverImageUrl,
+        Authors = book.BookAuthors.Select(ba => ba.Author.Name).ToList(),
+        Genres = book.BookGenres.Select(bg => bg.Genre.Name).ToList()
+    }).ToList();
 
-        // GET: api/Books/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
-        {
-            _logger.LogInformation($"Getting book with id {id}");
-            var book = await _context.Books.FindAsync(id);
+    return bookDetailDTOs;
+}
 
-            if (book == null)
-            {
-                _logger.LogWarning($"Book with id {id} not found");
-                return NotFound();
-            }
+// GET: api/Books/5
+[HttpGet("{id}")]
+public async Task<ActionResult<BookDetailDTO>> GetBook(int id)
+{
+    _logger.LogInformation($"Getting book with id {id}");
+    var book = await _context.Books
+                             .Include(b => b.BookAuthors)
+                                .ThenInclude(ba => ba.Author)
+                             .Include(b => b.BookGenres)
+                                .ThenInclude(bg => bg.Genre)
+                             .FirstOrDefaultAsync(b => b.BookId == id);
 
-            return book;
-        }
+    if (book == null)
+    {
+        _logger.LogWarning($"Book with id {id} not found");
+        return NotFound();
+    }
+
+    var bookDetailDTO = new BookDetailDTO
+    {
+        BookId = book.BookId,
+        Title = book.Title,
+        Description = book.Description,
+        Price = book.Price,
+        AverageRating = book.AverageRating,
+        ReviewCount = book.ReviewCount,
+        CoverImageUrl = book.CoverImageUrl,
+        Authors = book.BookAuthors.Select(ba => ba.Author.Name).ToList(),
+        Genres = book.BookGenres.Select(bg => bg.Genre.Name).ToList()
+    };
+
+    return bookDetailDTO;
+}
 
         // PUT: api/Books/5
         [HttpPut("{id}")]

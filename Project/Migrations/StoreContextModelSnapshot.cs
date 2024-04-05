@@ -169,6 +169,10 @@ namespace Project.Migrations
                     b.Property<double>("AverageRating")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("CoverImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
