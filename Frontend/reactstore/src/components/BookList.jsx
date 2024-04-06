@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BookItem from './BookItem';
+import { useFetch } from '../hooks/useFetch';
 import booksService from '../services/booksService';
 
 const BookList = () => {
-    const [books, setBooks] = useState([]);
+    const { data: books, loading, error } = useFetch(booksService.getAllBooks);
 
-    useEffect(() => {
-        const fetchBooks = async () => {
-            const response = await booksService.getAllBooks();
-            setBooks(response.data);
-        };
-
-        fetchBooks();
-    }, []);
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error loading books</div>;
 
     return (
         <div>

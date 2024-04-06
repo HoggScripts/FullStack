@@ -5,7 +5,7 @@ import usersService from '../services/usersService';
 const SignUpForm = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [userName, setUserName] = useState(''); // New state for username
+    const [userName, setUserName] = useState(''); 
     const [city, setCity] = useState('');
     const [province, setProvince] = useState('');
     const [postalCode, setPostalCode] = useState('');
@@ -24,7 +24,7 @@ const SignUpForm = () => {
         const user = {
             firstName,
             lastName,
-            userName, // Include username in the user object
+            userName, 
             address: fullAddress,
             email,
             password,
@@ -55,7 +55,7 @@ const SignUpForm = () => {
                 <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} required />
             </label>
             <label>
-                User Name: {/* New input field for username */}
+                User Name: {}
                 <input type="text" value={userName} onChange={e => setUserName(e.target.value)} required />
             </label>
             <label>
