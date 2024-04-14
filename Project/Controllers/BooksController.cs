@@ -145,6 +145,32 @@ public async Task<ActionResult<BookDetailDTO>> GetBook(int id)
             return CreatedAtAction("GetBook", new { id = book.BookId }, book);
         }
 
+// POST: api/Books/Multiple
+        [HttpPost("Multiple")]
+        public async Task<ActionResult<IEnumerable<Book>>> PostBooks(IEnumerable<Book> books)
+        {
+            _logger.LogInformation($"Creating new books");
+            _context.Books.AddRange(books);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (books.Any(book => BookExists(book.BookId)))
+                {
+                    _logger.LogWarning($"Attempted to create books, but one or more books with the same id already exists");
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetBooks", books.Select(book => new { id = book.BookId }).ToList(), books);
+        }
+
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)

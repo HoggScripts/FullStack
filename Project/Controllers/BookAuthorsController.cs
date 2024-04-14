@@ -106,6 +106,50 @@ namespace Project.Controllers
 
             return CreatedAtAction("GetBookAuthor", new { id = bookAuthor.BookId }, bookAuthor);
         }
+        
+        // POST: api/BookAuthors/Multiple
+        [HttpPost("Multiple")]
+        public async Task<ActionResult<IEnumerable<BookAuthor>>> PostMultipleBookAuthors(IEnumerable<BookAuthor> bookAuthors)
+        {
+            _logger.LogInformation($"Creating new book authors");
+            _context.BookAuthors.AddRange(bookAuthors);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (bookAuthors.Any(bookAuthor => BookAuthorExists(bookAuthor.BookId)))
+                {
+                    _logger.LogWarning($"Attempted to create book authors, but one or more book authors with the same id already exists");
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetBookAuthors", bookAuthors.Select(bookAuthor => new { id = bookAuthor.BookId }).ToList(), bookAuthors);
+        }
+        
+        // DELETE: api/BookAuthors/5/3
+        [HttpDelete("{bookId}/{authorId}")]
+        public async Task<IActionResult> DeleteBookAuthor(int bookId, int authorId)
+        {
+            _logger.LogInformation($"Deleting book author with bookId {bookId} and authorId {authorId}");
+            var bookAuthor = await _context.BookAuthors.FindAsync(bookId, authorId);
+            if (bookAuthor == null)
+            {
+                _logger.LogWarning($"Book author with bookId {bookId} and authorId {authorId} not found");
+                return NotFound();
+            }
+
+            _context.BookAuthors.Remove(bookAuthor);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         // DELETE: api/BookAuthors/5
         [HttpDelete("{id}")]

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Project.DTOs;
 using Project.Services;
 
 namespace Project.Controllers
@@ -90,12 +91,27 @@ namespace Project.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 var roles = await _userManager.GetRolesAsync(user);
-                var token = GenerateJwtToken(user,roles);
-                return Ok(new { Token = token });
+        
+                // Generate JWT token
+                var token = GenerateJwtToken(user, roles);
+
+                // Create and populate the response model with user details and token
+                var response = new LoginResponse
+                {
+                    Token = token,
+                    Email = user.Email,
+                    Roles = roles,
+                    FirstName = user.FirstName, // Assuming these fields are part of your User model
+                    LastName = user.LastName
+                    // Populate other fields as necessary
+                };
+
+                return Ok(response); // Return the populated response model
             }
 
             return Unauthorized("Invalid login attempt.");
         }
+
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()

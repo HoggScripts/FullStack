@@ -22,10 +22,15 @@ const deleteUser = (id) => {
     return axios.delete(`${API_URL}/${id}`);
 };
 
+const getUserByEmail = (email) => {
+    return axios.get(`${API_URL}/email/${email}`);
+};
+
 export default {
     getAllUsers,
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUserByEmail // Add this line
 };

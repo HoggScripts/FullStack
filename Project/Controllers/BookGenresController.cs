@@ -106,6 +106,32 @@ namespace Project.Controllers
 
             return CreatedAtAction("GetBookGenre", new { id = bookGenre.BookId }, bookGenre);
         }
+        
+        // POST: api/BookGenres/Multiple
+        [HttpPost("Multiple")]
+        public async Task<ActionResult<IEnumerable<BookGenre>>> PostMultipleBookGenres(IEnumerable<BookGenre> bookGenres)
+        {
+            _logger.LogInformation($"Creating new book genres");
+            _context.BookGenres.AddRange(bookGenres);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (bookGenres.Any(bookGenre => BookGenreExists(bookGenre.GenreId)))
+                {
+                    _logger.LogWarning($"Attempted to create book genres, but one or more book genres with the same id already exists");
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetBookGenres", bookGenres.Select(bookGenre => new { id = bookGenre.GenreId }).ToList(), bookGenres);
+        }
 
         // DELETE: api/BookGenres/5
         [HttpDelete("{id}")]

@@ -46,6 +46,22 @@ namespace Project.Controllers
 
             return user;
         }
+        
+        // GET: api/Users/email/{email}
+        [HttpGet("email/{email}")]
+        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        {
+            _logger.LogInformation($"Getting user with email {email}");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                _logger.LogWarning($"User with email {email} not found");
+                return NotFound();
+            }
+
+            return user;
+        }
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
