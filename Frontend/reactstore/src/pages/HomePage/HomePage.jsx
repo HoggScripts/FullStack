@@ -7,14 +7,14 @@ import BookListCarousel from "../../components/BookDisplays/BookListCarousel";
 const HomePage = () => {
     return (
         <div className="relative">
-            <HomeHeader />
-            <SubHeader />
+            <HomeHeader/>
+            <SubHeader/>
             {/* Container for image and ScrollBanner */}
-            <div className="relative mb-6">
+            <div className="bg-black relative mb-6">
                 <img
-                    src={`${process.env.PUBLIC_URL}/Background1.webp`}
+                    src={`${process.env.PUBLIC_URL}/1.jpeg`}
                     alt="Otaku Books"
-                    className="w-full md:h-64"
+                    className="w-full h-1/2 md:h-32 object-contain"
                 />
                 {/* Position ScrollBanner at the bottom of the image container */}
                 <div
@@ -24,8 +24,11 @@ const HomePage = () => {
                     <ScrollBanner/>
                 </div>
             </div>
-            {/* Use the BookListCarousel component */}
-            <BookListCarousel filter={{type: 'all'}}/>
+            <div>
+                <BookListCarousel filter={{type: 'genre', value: 'Discounted'}}/>
+                <BookListCarousel filter={{type: 'genre', value: 'Staff Picks'}}/>
+                <BookListCarousel filter={{type: 'genre', value: 'Best Sellers'}}/>
+            </div>
         </div>
     );
 };

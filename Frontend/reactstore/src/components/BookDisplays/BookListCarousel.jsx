@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BookItem from '../BookItem';
+import CarouselBanner from "./CarouselBanner";
 import { useFetch } from '../../hooks/useFetch';
 import booksService from "../../services/booksService";
 
@@ -10,7 +11,7 @@ const BookListCarousel = ({ filter }) => {
 
     useEffect(() => {
         if (books) {
-            let newFilteredBooks;
+            let newFilteredBooks = []; // Assign an empty array as a default value
             switch (filter.type) {
                 case 'author':
                     newFilteredBooks = books.filter(book => book.authors.map(author => author.toLowerCase()).includes(filter.value.toLowerCase()));
@@ -50,6 +51,7 @@ const BookListCarousel = ({ filter }) => {
 
     return (
         <div id="bookCarousel" className="carousel slide bg-black" data-ride="carousel">
+            <CarouselBanner filterValue={filter.value} /> {/* Pass filter value instead of type */}
             <div className="carousel-inner p-10">
                 {chunks.map((chunk, index) => (
                     <div className={`carousel-item ${index === activeIndex ? 'active' : ''}`} key={index}>
@@ -74,7 +76,7 @@ const BookListCarousel = ({ filter }) => {
                 <span className="text-4xl" aria-hidden="true">›</span>
             </button>
         </div>
-    );
+    ); // This was missing
 };
 
 export default BookListCarousel;

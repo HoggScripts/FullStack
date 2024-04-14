@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    mode: 'jit',
+  mode: 'jit',
   darkMode: ["class"],
   content: [
     './src/components/**/*.{html,js,jsx}',
@@ -53,6 +53,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        'light-brown': '#A67C52', // Add this line
       },
       borderRadius: {
         lg: "var(--radius)",
