@@ -1,33 +1,42 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux'; // Import Provider
+import { Provider } from 'react-redux';
 import HomePage from './pages/HomePage/HomePage';
 import AboutUs from './pages/AboutUs/AboutUs';
 import Locations from './pages/Locations/Locations';
-import SignUpForm from './components/HomeHeader/SignUpForm';
+import SearchResults from './pages/SearchResults/SearchResults';
+import DetailedBookItem from "./pages/BookDetails/DetailedBookItem";
+import getStore from './context/store';
+import SignUpForm from "./components/Header/SignUpForm";
+import { ShoppingCartProvider, useShoppingCart } from './context/ShoppingCartContext';
+import Cart from './components/ShoppingCart/Cart';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// index.js or App.js
 import 'tailwindcss/tailwind.css';
-import getStore from './components/store'; // Import your Redux store
 
-const { store } = getStore(); // Call the function to get the store
+const { store } = getStore();
 
 function App() {
     return (
-        <Provider store={store}> {/* Wrap your application with Provider */}
-            <Router>
-                <div className="App">
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/aboutus" element={<AboutUs />} />
-                        <Route path="/locations" element={<Locations />} />
-                        <Route path="/signup" element={<SignUpForm />} />
-                    </Routes>
-                </div>
-            </Router>
+        <Provider store={store}>
+            <ShoppingCartProvider>
+                <Router>
+                    <div className="App">
+                        <Routes>
+                            <Route path="" element={<HomePage />} />
+                            <Route path="/aboutus" element={<AboutUs />} />
+                            <Route path="/locations" element={<Locations />} />
+                            <Route path="/signup" element={<SignUpForm />} />
+                            <Route path="/search/*" element={<SearchResults />} />
+                            <Route path="/book/:bookId" element={<DetailedBookItem />} />
+                        </Routes>
+                        <Cart />
+                    </div>
+                </Router>
+            </ShoppingCartProvider>
         </Provider>
     );
 }
 
 export default App;
+

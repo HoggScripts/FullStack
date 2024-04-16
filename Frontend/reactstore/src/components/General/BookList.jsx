@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import BookItem from './BookItem';
-import { useFetch } from '../hooks/useFetch';
-import booksService from '../services/booksService';
+import BookItem from "../Carousel/BookItem";
+import {useFetch} from "../../hooks/useFetch";
+import booksService from "../../services/booksService";
 
-const BookList = ({ filter }) => {
+const BookList = ({ filter, searchQuery }) => {
     const [filteredBooks, setFilteredBooks] = useState([]);
     const { data: books, loading, error } = useFetch(booksService.getAllBooks);
 
@@ -16,13 +16,22 @@ const BookList = ({ filter }) => {
                 case 'genre':
                     setFilteredBooks(books.filter(book => book.genres.map(genre => genre.toLowerCase()).includes(filter.value.toLowerCase())));
                     break;
+                case 'search':
+                    if (searchQuery) {
+                        setFilteredBooks(books.filter(book =>
+                            book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            book.authors.some(author => author.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                            book.genres.some(genre => genre.toLowerCase().includes(searchQuery.toLowerCase()))
+                        ));
+                    }
+                    break;
                 case 'all':
                 default:
                     setFilteredBooks(books);
                     break;
             }
         }
-    }, [books, filter]);
+    }, [books, filter, searchQuery]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading books</div>;

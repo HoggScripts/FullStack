@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LogInButton from './LogInButton';
 import LogOutButton from './LogOutButton';
-import { loginUser, logoutUser } from '../UserAction';
+import { loginUser, logoutUser } from '../../context/UserAction';
 import usersService from '../../services/usersService';
 
 const AuthenticationControl = ({ className }) => {

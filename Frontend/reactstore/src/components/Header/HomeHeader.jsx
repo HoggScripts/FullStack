@@ -1,6 +1,7 @@
 import React from 'react';
 import AuthenticationControl from "./AuthenticationControl";
 import RoutingButton from "./RoutingButton";
+import CartButton from "./CartButton";
 
 const HomeHeader = () => {
     return (
@@ -19,11 +20,13 @@ const HomeHeader = () => {
 
 
             {/* Authentication Control */}
-            <div className="flex space-x-2">
+            <div className="flex space-x-5">
                 <RoutingButton label="About Us" to="/aboutus" />
                 <RoutingButton label="Locations" to="/locations" />
                 <AuthenticationControl />
+                <CartButton />
             </div>
+
         </div>
     );
 };

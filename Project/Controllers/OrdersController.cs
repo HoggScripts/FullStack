@@ -22,6 +22,22 @@ namespace Project.Controllers
             _context = context;
             _logger = logger;
         }
+        
+        // GET: api/Orders/User/{userId}
+        [HttpGet("User/{userId}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByUserId(string userId)
+        {
+            _logger.LogInformation($"Getting orders for user with id {userId}");
+            var orders = await _context.Orders.Where(o => o.UserId == userId).ToListAsync();
+
+            if (orders == null || !orders.Any())
+            {
+                _logger.LogWarning($"No orders found for user with id {userId}");
+                return NotFound();
+            }
+
+            return orders;
+        }
 
         // GET: api/Orders
         [HttpGet]

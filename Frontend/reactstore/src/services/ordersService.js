@@ -22,10 +22,15 @@ const deleteOrder = (id) => {
     return axios.delete(`${API_URL}/${id}`);
 };
 
+const getOrdersByUserId = (userId) => {
+    return axios.get(`${API_URL}/User/${userId}`);
+};
+
 export default {
     getAllOrders,
     getOrderById,
     createOrder,
     updateOrder,
-    deleteOrder
+    deleteOrder,
+    getOrdersByUserId
 };

@@ -1,6 +1,6 @@
 // Locations.jsx
 import React from 'react';
-import MapComponent from '../../components/MapComponent';
+import MapComponent from "../../components/Maps/MapComponent";
 
 const Locations = () => {
     return (

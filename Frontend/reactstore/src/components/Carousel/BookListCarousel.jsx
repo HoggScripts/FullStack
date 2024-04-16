@@ -1,8 +1,10 @@
+
 import React, { useEffect, useState } from 'react';
-import BookItem from '../BookItem';
+import BookItem from "./BookItem";
 import CarouselBanner from "./CarouselBanner";
 import { useFetch } from '../../hooks/useFetch';
 import booksService from "../../services/booksService";
+
 
 const BookListCarousel = ({ filter }) => {
     const [filteredBooks, setFilteredBooks] = useState([]);
@@ -52,13 +54,14 @@ const BookListCarousel = ({ filter }) => {
     return (
         <div id="bookCarousel" className="carousel slide bg-black" data-ride="carousel">
             <CarouselBanner filterValue={filter.value} /> {/* Pass filter value instead of type */}
-            <div className="carousel-inner p-10">
+            <div className="carousel-inner">
                 {chunks.map((chunk, index) => (
                     <div className={`carousel-item ${index === activeIndex ? 'active' : ''}`} key={index}>
                         <div className="grid grid-cols-4 gap-4">
                             {chunk.map((book, idx) => (
                                 <div className="col-span-1" key={idx}>
                                     <BookItem book={book}/>
+                                    
                                 </div>
                             ))}
                         </div>
@@ -76,8 +79,9 @@ const BookListCarousel = ({ filter }) => {
                 <span className="text-4xl" aria-hidden="true">›</span>
             </button>
         </div>
-    ); // This was missing
+    ); 
 };
 
 export default BookListCarousel;
+
 
