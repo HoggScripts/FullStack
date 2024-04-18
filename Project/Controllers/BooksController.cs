@@ -23,6 +23,49 @@ namespace Project.Controllers
             _context = context;
             _logger = logger;
         }
+        
+        // PATCH: api/Books/5/incrementReviewCount
+        [HttpPatch("{id}/incrementReviewCount")]
+        public async Task<IActionResult> IncrementReviewCount(int id)
+        {
+            // Find the book with the given id
+            var book = await _context.Books.Include(b => b.BookReviews).FirstOrDefaultAsync(b => b.BookId == id);
+            if (book == null)
+            {
+                // If the book does not exist, return a 404 status code
+                return NotFound();
+            }
+
+            // Increment the review count of the book
+            book.ReviewCount += 1;
+
+            // Calculate the new average rating based on all reviews for the book
+            if (book.BookReviews.Any())
+            {
+                book.AverageRating = book.BookReviews.Average(r => r.Rating);
+            }
+
+            // Save the changes to the database
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BookExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // Return a success status code and the updated book
+            return Ok(book);
+        }
+        
 // GET: api/Books
 [HttpGet]
 public async Task<ActionResult<IEnumerable<BookDetailDTO>>> GetBooks()

@@ -13,6 +13,8 @@ import Cart from './components/ShoppingCart/Cart';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'tailwindcss/tailwind.css';
+import HomeHeader from "./components/Header/HomeHeader";
+import SubHeader from "./components/SubHeader/SubHeader";
 
 const { store } = getStore();
 
@@ -22,15 +24,19 @@ function App() {
             <ShoppingCartProvider>
                 <Router>
                     <div className="App">
+                        <div className="position-fixed z-3 w-full mb-4">
+                            <HomeHeader/>
+                            <SubHeader/>
+                        </div>
                         <Routes>
-                            <Route path="" element={<HomePage />} />
-                            <Route path="/aboutus" element={<AboutUs />} />
-                            <Route path="/locations" element={<Locations />} />
-                            <Route path="/signup" element={<SignUpForm />} />
-                            <Route path="/search/*" element={<SearchResults />} />
-                            <Route path="/book/:bookId" element={<DetailedBookItem />} />
+                            <Route path="" element={<HomePage/>}/>
+                            <Route path="/aboutus" element={<AboutUs/>}/>
+                            <Route path="/locations" element={<Locations/>}/>
+                            <Route path="/signup" element={<SignUpForm/>}/>
+                            <Route path="/search/*" element={<SearchResults/>}/>
+                            <Route path="/book/:bookId" element={<DetailedBookItem/>}/>
                         </Routes>
-                        <Cart />
+                        <Cart/>
                     </div>
                 </Router>
             </ShoppingCartProvider>

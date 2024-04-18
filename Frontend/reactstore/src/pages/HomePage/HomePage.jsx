@@ -6,10 +6,6 @@ import BookListCarousel from "../../components/Carousel/BookListCarousel";
 const HomePage = () => {
     return (
         <div className="relative">
-            <div className="position-fixed z-3 w-full">
-                <HomeHeader/>
-                <SubHeader/>
-            </div>
             <div className="pt-32 pt-lg-5"> 
                 <div className="bg-black">
                     <img

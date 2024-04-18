@@ -4,37 +4,34 @@ const TextReview = ({ review = { headline: '', reviewText: '' }, onReviewChange,
     const { headline, reviewText } = review;
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <h2 className="text-xl font-semibold mb-4">Write a Review</h2>
+        <div className="max-w-lg mx-auto my-4 p-4 bg-white rounded-lg shadow">
+            <h2 className="text-xl font-semibold mb-2">Write a Review</h2>
             <form onSubmit={(e) => {
                 e.preventDefault();
                 onSubmit();
             }}>
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        className="form-control w-full px-3 py-2 text-base text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline"
-                        placeholder="Review Headline"
-                        value={headline}
-                        onChange={e => onReviewChange({ ...review, headline: e.target.value })}
-                    />
-                </div>
-                <div className="mb-4">
-                    <textarea
-                        className="form-control w-full px-3 py-2 text-base text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline"
-                        rows="5"
-                        placeholder="Max 100 words"
-                        value={reviewText}
-                        onChange={e => onReviewChange({ ...review, reviewText: e.target.value })}
-                    />
-                    <div className="text-sm text-gray-600 mt-2">{reviewText.split(' ').filter(Boolean).length} / 100 words</div>
-                </div>
-                <div className="mb-4">
-                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit Review</button>
-                </div>
+                <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded mb-2"
+                    placeholder="Review Headline"
+                    value={headline}
+                    onChange={e => onReviewChange({ ...review, headline: e.target.value })}
+                />
+                <textarea
+                    className="w-full p-2 border border-gray-300 rounded mb-2"
+                    rows="4"
+                    placeholder="Max 100 words"
+                    value={reviewText}
+                    onChange={e => onReviewChange({ ...review, reviewText: e.target.value })}
+                />
+                <div className="text-right text-sm text-gray-500 mb-2">{reviewText.split(' ').filter(Boolean).length} / 100 words</div>
+                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Submit Review
+                </button>
             </form>
         </div>
     );
 };
 
 export default TextReview;
+

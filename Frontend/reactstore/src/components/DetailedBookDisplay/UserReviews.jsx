@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import reviewsService from '../../services/reviewsService';
-import usersService from '../../services/usersService';
+import usersService from "../../services/usersService"; // Assuming this is the correct path
 
 const UserReviews = ({ book }) => {
     const [reviews, setReviews] = useState([]);
@@ -55,20 +55,25 @@ const UserReviews = ({ book }) => {
     }
 
     return (
-        <div>
+        <div className="mt-8 mx-4 md:mx-0">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Reader Reviews</h2>
             {reviews.map((review, index) => (
-                <div key={index}>
-                    <h2>{review.userFirstName}</h2>
-                    <h3>{review.headline}</h3>
-                    <p>{review.reviewText}</p>
-                    <div>
-                        {[1, 2, 3, 4, 5].map((star, index) => (
-                            <FontAwesomeIcon
-                                key={index}
-                                icon={star <= review.Rating ? solidStar : regularStar}
-                                className={`cursor-pointer ${star <= review.rating ? 'text-yellow-400' : 'text-gray-400'}`}
-                            />
-                        ))}
+                <div key={index} className="bg-white p-4 rounded-lg shadow mb-4 transition duration-300 ease-in-out hover:shadow-lg">
+                    <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                            <h3 className="text-lg font-semibold text-gray-900">{review.userFirstName || 'Anonymous'}</h3>
+                            <p className="font-medium text-gray-600">{review.headline}</p>
+                            <p className="text-sm text-gray-700 mt-2">{review.reviewText}</p>
+                        </div>
+                        <div className="flex items-center ml-4">
+                            {[1, 2, 3, 4, 5].map((star, idx) => (
+                                <FontAwesomeIcon
+                                    key={idx}
+                                    icon={star <= review.rating ? solidStar : regularStar}
+                                    className="text-yellow-400 mr-1"
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             ))}

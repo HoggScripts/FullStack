@@ -2,18 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import StarsReview from "../../components/DetailedBookDisplay/StarsReview";
 import TextReview from "../../components/DetailedBookDisplay/TextReview";
-import booksService from "../../services/booksService";
-import reviewsService from '../../services/reviewsService';
-import { useShoppingCart } from '../../context/ShoppingCartContext';
-import { useSelector} from "react-redux";
 import UserReviews from "../../components/DetailedBookDisplay/UserReviews";
-
+import booksService from "../../services/booksService";
+import { useShoppingCart } from '../../context/ShoppingCartContext';
+import { useSelector } from "react-redux";
+import reviewsService from "../../services/reviewsService";
 
 const DetailedBookItem = () => {
     const { bookId } = useParams();
-
-        const user = useSelector(state => state.user);
-
+    const user = useSelector(state => state.user);
     const [book, setBook] = useState(null);
     const [review, setReview] = useState({
         headline: '',
@@ -36,30 +33,21 @@ const DetailedBookItem = () => {
         setReview(prev => ({ ...prev, ...changes }));
     };
 
-    console.log('User:', user);
     const handleSubmitReview = async () => {
         const reviewData = {
             Headline: review.headline,
             ReviewText: review.reviewText,
             Rating: review.rating,
             BookId: bookId,
-            UserId: user.id // This should be dynamically set based on the logged-in user
+            UserId: user.id // Assuming user.id is available from the state
         };
 
         try {
-            const response = await reviewsService.createReview(reviewData);
-            console.log('Review submitted successfully:', response.data);
-            alert('Review submitted successfully!');
-            // Reset the review state if necessary or handle other UI changes
-            setReview({
-                headline: '',
-                reviewText: '',
-                rating: 0,
-            });
-
-            // Increment the review count of the book
+            await reviewsService.createReview(reviewData);
             await booksService.incrementReviewCount(bookId);
-            console.log('Book review count incremented successfully');
+            alert('Review submitted successfully!');
+            // Optionally reset review state or update the page to show the new review
+            setReview({ headline: '', reviewText: '', rating: 0 });
         } catch (error) {
             console.error('Failed to submit review:', error);
             alert('Failed to submit review. Please try again.');
@@ -67,7 +55,11 @@ const DetailedBookItem = () => {
     };
 
     const handleAddToCart = () => {
-        addToCart(book);
+        if (book) {
+            addToCart(book);
+        } else {
+            alert('Failed to add book to cart.');
+        }
     };
 
     if (!book) {
@@ -77,32 +69,24 @@ const DetailedBookItem = () => {
     }
 
     return (
-        <div className="flex justify-center items-center bg-black min-h-screen">
-            <div className="bg-gray-100 w-1/2 max-w-sm md:max-w-lg lg:max-w-xl p-4 shadow-lg rounded-lg my-5">
-                <div className="flex flex-col md:flex-row items-center justify-center">
-                    <div className="w-full md:w-1/2 p-3 border-3 border-blue-500">
-                        <img
-                            src={`${process.env.PUBLIC_URL}${book.coverImageUrl}`}
-                            alt={book.title}
-                            className="w-full h-auto shadow-xl rounded-lg"
-                        />
-                    </div>
-                    <div className="w-full md:w-1/2 p-4 flex flex-col">
-                        <h1 className="text-3xl font-bold text-gray-800">{book.title}</h1>
-                        <h2 className="text-xl text-gray-600 mt-2">
-                            {book.authors && book.authors.length > 0 ? book.authors.join(', ') : 'No authors'}
-                        </h2>
-                        <p className="text-gray-700 mt-4">{book.description}</p>
-                        <p className="text-lg font-semibold text-gray-800 mt-4">Price: ${book.price}</p>
-                        <StarsReview rating={review.rating} onRatingChange={(rating) => handleReviewChange({ rating })}/>
-                        <p>Total reviews: {book.reviewCount}</p>
-                        <TextReview review={review} onReviewChange={handleReviewChange} onSubmit={handleSubmitReview}/>
-                        <button
-                            onClick={handleAddToCart}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
-                            Add to Cart
+        <div className="container mx-auto px-4 py-8">
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h1 className="text-3xl font-bold leading-tight text-gray-900">{book.title}</h1>
+                    <p className="mt-1 max-w-2xl text-sm text-gray-500">{book.authors.join(', ')}</p>
+                </div>
+                <div className="px-4 py-5 sm:p-6">
+                    <img src={book.coverImageUrl} alt={book.title} className="w-full sm:max-w-md rounded-lg shadow-lg mx-auto"/>
+                    <div className="mt-4">
+                        <button onClick={handleAddToCart}
+                                className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Add to Cart ${book.price}
                         </button>
-                        <UserReviews book={book} />
+                        <p>Total reviews: {book.reviewCount}</p>
+                        <p>Average rating: {book.averageRating}</p>
+                        <StarsReview rating={review.rating} onRatingChange={(rating) => handleReviewChange({rating})}/>
+                        <TextReview review={review} onReviewChange={handleReviewChange} onSubmit={handleSubmitReview}/>
+                        <UserReviews book={book}/>
                     </div>
                 </div>
             </div>
