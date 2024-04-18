@@ -46,6 +46,22 @@ namespace Project.Controllers
 
             return review;
         }
+        
+        // GET: api/Reviews/ByBook/5
+        [HttpGet("ByBook/{bookId}")]
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviewsByBookId(int bookId)
+        {
+            _logger.LogInformation($"Getting reviews for book with id {bookId}");
+            var reviews = await _context.Reviews.Where(r => r.BookId == bookId).ToListAsync();
+
+            if (reviews == null || !reviews.Any())
+            {
+                _logger.LogWarning($"No reviews found for book with id {bookId}");
+                return NotFound();
+            }
+
+            return reviews;
+        }
 
         // PUT: api/Reviews/5
         [HttpPut("{id}")]

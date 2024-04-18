@@ -22,10 +22,15 @@ const deleteReview = (id) => {
     return axios.delete(`${API_URL}/${id}`);
 };
 
+const getReviewsByBookId = (bookId) => {
+    return axios.get(`${API_URL}/ByBook/${bookId}`);
+};
+
 export default {
     getAllReviews,
     getReviewById,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    getReviewsByBookId
 };

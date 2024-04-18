@@ -21,11 +21,15 @@ const updateBook = (id, updatedBook) => {
 const deleteBook = (id) => {
     return axios.delete(`${API_URL}/${id}`);
 };
+const incrementReviewCount = (id) => {
+    return axios.patch(`${API_URL}/${id}/incrementReviewCount`);
+};
 
 export default {
     getAllBooks,
     getBookById,
     createBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    incrementReviewCount
 };

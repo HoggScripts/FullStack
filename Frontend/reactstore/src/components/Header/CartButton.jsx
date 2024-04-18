@@ -11,9 +11,7 @@ const CartButton = () => {
         return (
             <button className="cart-button rounded-circle d-flex justify-content-center align-items-center"
                     onClick={() => {
-                        console.log('Cart button clicked');
                         openCart();
-                        console.log('OpenCart() called by CartButton.jsx');
                     }}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart cart-icon"
                      viewBox="0 0 16 16">

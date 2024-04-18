@@ -3,26 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 
-const StarsReview = ({ book }) => {
-    const averageRating = book?.averageRating;
-    const reviewCount = book?.reviewCount;
-
-    const filledStars = averageRating ? Array(Math.round(averageRating)).fill(null) : [];
-    const emptyStars = Array(5 - filledStars.length).fill(null);
-
+const StarsReview = ({ rating, onRatingChange }) => {
     return (
-        <div className="height-100 container d-flex justify-content-center align-items-center">
+        <div className="h-100 container flex justify-center items-center">
             <div className="card p-3">
-                <div className="d-flex justify-content-between align-items-center">
-                    <div className="ratings">
-                        {filledStars.map((_, index) => (
-                            <FontAwesomeIcon key={index} icon={solidStar} className="rating-color" />
-                        ))}
-                        {emptyStars.map((_, index) => (
-                            <FontAwesomeIcon key={index + filledStars.length} icon={regularStar} />
+                <div className="flex justify-between items-center">
+                    <div className="ratings p-1">
+                        {[1, 2, 3, 4, 5].map((star, index) => (
+                            <FontAwesomeIcon
+                                key={index}
+                                icon={star <= rating ? solidStar : regularStar}
+                                onClick={() => onRatingChange(star)}
+                                className={`cursor-pointer ${star <= rating ? 'text-yellow-400' : 'text-gray-400'}`}
+                            />
                         ))}
                     </div>
-                    <h5 className="review-count">{reviewCount || 0} Reviews</h5>
                 </div>
             </div>
         </div>

@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import StarsReview from "../../components/DetailedBookDisplay/StarsReview";
-import booksService from "../../services/booksService";
 import TextReview from "../../components/DetailedBookDisplay/TextReview";
+import booksService from "../../services/booksService";
+import reviewsService from '../../services/reviewsService';
 import { useShoppingCart } from '../../context/ShoppingCartContext';
+import { useSelector} from "react-redux";
+import UserReviews from "../../components/DetailedBookDisplay/UserReviews";
+
 
 const DetailedBookItem = () => {
     const { bookId } = useParams();
-    const [book, setBook] = useState(null);
-    const { addToCart } = useShoppingCart();
 
-    const handleAddToCart = () => {
-        addToCart(book);
-    };
+        const user = useSelector(state => state.user);
+
+    const [book, setBook] = useState(null);
+    const [review, setReview] = useState({
+        headline: '',
+        reviewText: '',
+        rating: 0,
+    });
+    const { addToCart } = useShoppingCart();
 
     useEffect(() => {
         booksService.getBookById(bookId)
@@ -23,6 +31,44 @@ const DetailedBookItem = () => {
                 console.error('Error fetching book:', error);
             });
     }, [bookId]);
+
+    const handleReviewChange = (changes) => {
+        setReview(prev => ({ ...prev, ...changes }));
+    };
+
+    console.log('User:', user);
+    const handleSubmitReview = async () => {
+        const reviewData = {
+            Headline: review.headline,
+            ReviewText: review.reviewText,
+            Rating: review.rating,
+            BookId: bookId,
+            UserId: user.id // This should be dynamically set based on the logged-in user
+        };
+
+        try {
+            const response = await reviewsService.createReview(reviewData);
+            console.log('Review submitted successfully:', response.data);
+            alert('Review submitted successfully!');
+            // Reset the review state if necessary or handle other UI changes
+            setReview({
+                headline: '',
+                reviewText: '',
+                rating: 0,
+            });
+
+            // Increment the review count of the book
+            await booksService.incrementReviewCount(bookId);
+            console.log('Book review count incremented successfully');
+        } catch (error) {
+            console.error('Failed to submit review:', error);
+            alert('Failed to submit review. Please try again.');
+        }
+    };
+
+    const handleAddToCart = () => {
+        addToCart(book);
+    };
 
     if (!book) {
         return <div className="flex justify-center items-center h-screen">
@@ -48,17 +94,15 @@ const DetailedBookItem = () => {
                         </h2>
                         <p className="text-gray-700 mt-4">{book.description}</p>
                         <p className="text-lg font-semibold text-gray-800 mt-4">Price: ${book.price}</p>
-                        <div className="mt-2">
-                            <StarsReview/>
-                        </div>
-                        <div className="mt-1">
-                            <TextReview/>
-                        </div>
+                        <StarsReview rating={review.rating} onRatingChange={(rating) => handleReviewChange({ rating })}/>
+                        <p>Total reviews: {book.reviewCount}</p>
+                        <TextReview review={review} onReviewChange={handleReviewChange} onSubmit={handleSubmitReview}/>
                         <button
                             onClick={handleAddToCart}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
                             Add to Cart
                         </button>
+                        <UserReviews book={book} />
                     </div>
                 </div>
             </div>
