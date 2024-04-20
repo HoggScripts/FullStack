@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import SearchBarItem from "./SearchBarItem";// Import SearchBookItem instead of BookItem
-import { useFetch} from "../../hooks/useFetch";
+import SearchBarItem from "./SearchBarItem";
+import { useFetch } from "../../hooks/useFetch";
 import booksService from "../../services/booksService";
+import BookItem from "../Carousel/BookItem";
 
 const SearchResultsList = ({ searchQuery }) => {
     const [filteredBooks, setFilteredBooks] = useState([]);
@@ -21,10 +22,10 @@ const SearchResultsList = ({ searchQuery }) => {
     if (error) return <div>Error loading books</div>;
 
     return (
-        <div className="flex flex-wrap justify-center bg-black">
+        <div className="p-4 rounded-lg grid grid-cols-2 gap-4">
             {filteredBooks.map((book) => (
-                <div className="w-1/4 p-4">
-                    <SearchBarItem key={book.bookId} book={book} /> {/* Use SearchBookItem here */}
+                <div key={book.bookId}>
+                    <BookItem book={book} />
                 </div>
             ))}
         </div>

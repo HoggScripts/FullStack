@@ -2,8 +2,11 @@ import React from 'react';
 import AuthenticationControl from "./AuthenticationControl";
 import RoutingButton from "./RoutingButton";
 import CartButton from "./CartButton";
-
+import { useSelector } from 'react-redux';
 const HomeHeader = () => {
+    
+    const user = useSelector(state => state.user);
+    
     return (
         <div className="bg-black text-white flex items-center justify-between py-2 px-4">
             <div className="flex items-center space-x-4">
@@ -19,10 +22,11 @@ const HomeHeader = () => {
 
 
 
-            {/* Authentication Control */}
             <div className="flex space-x-5">
+                <RoutingButton label="Home" to="/" />
                 <RoutingButton label="About Us" to="/aboutus" />
                 <RoutingButton label="Locations" to="/locations" />
+                {user && <RoutingButton label="Profile" to="/profile" />}
                 <AuthenticationControl />
                 <CartButton />
             </div>

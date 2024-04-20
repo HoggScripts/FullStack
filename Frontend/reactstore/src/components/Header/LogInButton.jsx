@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import LogInCard from './LogInCard';
-import './HomeHeader.css'; // Import the CSS file
+import './HomeHeader.css'; 
 
 const LogInButton = ({ onSuccessfulLogin }) => {
     const [show, setShow] = React.useState(false);

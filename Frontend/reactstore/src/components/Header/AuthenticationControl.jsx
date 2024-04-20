@@ -19,8 +19,16 @@ const AuthenticationControl = ({ className }) => {
             });
     };
 
+
     const handleLogOut = () => {
-        dispatch(logoutUser());
+        try {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            dispatch(logoutUser());
+        }
+        catch (error) {
+            console.error('Error logging out', error);
+        }
     };
 
     return (

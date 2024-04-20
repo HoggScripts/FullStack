@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import './HomeHeader.css'; // Import the CSS file
+import './HomeHeader.css'; 
 
 const LogOutButton = ({ onClick }) => {
     return (

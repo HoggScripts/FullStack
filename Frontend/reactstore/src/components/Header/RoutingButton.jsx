@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './HomeHeader.css'; // Import the CSS file
+import './HomeHeader.css'; 
 
 const RoutingButton = ({ label, to }) => {
     const navigate = useNavigate();

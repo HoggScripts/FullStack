@@ -46,7 +46,7 @@ const DetailedBookItem = () => {
             await reviewsService.createReview(reviewData);
             await booksService.incrementReviewCount(bookId);
             alert('Review submitted successfully!');
-            // Optionally reset review state or update the page to show the new review
+
             setReview({ headline: '', reviewText: '', rating: 0 });
         } catch (error) {
             console.error('Failed to submit review:', error);
@@ -82,10 +82,11 @@ const DetailedBookItem = () => {
                                 className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Add to Cart ${book.price}
                         </button>
-                        <p>Total reviews: {book.reviewCount}</p>
-                        <p>Average rating: {book.averageRating}</p>
+
                         <StarsReview rating={review.rating} onRatingChange={(rating) => handleReviewChange({rating})}/>
                         <TextReview review={review} onReviewChange={handleReviewChange} onSubmit={handleSubmitReview}/>
+                        <p className='flex justify-center'>Total reviews: {book.reviewCount}</p>
+                        <p className='flex justify-center'>Average rating: {book.averageRating}</p>
                         <UserReviews book={book}/>
                     </div>
                 </div>
@@ -95,6 +96,7 @@ const DetailedBookItem = () => {
 };
 
 export default DetailedBookItem;
+
 
 
 

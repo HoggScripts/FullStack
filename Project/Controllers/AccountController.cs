@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Project.DTOs;
 using Project.Services;
+using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace Project.Controllers
 {
@@ -24,13 +26,15 @@ namespace Project.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly EmailService _emailService;
         private readonly IConfiguration _configuration;
+        private readonly StoreContext _context;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, EmailService emailService, IConfiguration configuration)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, EmailService emailService, IConfiguration configuration, StoreContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpPost("register")]
@@ -58,8 +62,6 @@ namespace Project.Controllers
             return BadRequest(result.Errors);
         }
 
-
-        // Add an action to handle email verification
         [HttpGet("verify-email")]
         public async Task<IActionResult> VerifyEmail(string userId, string token)
         {
@@ -80,8 +82,6 @@ namespace Project.Controllers
             return BadRequest("Email verification failed.");
         }
 
-
-
         [HttpPost("login")]
         public async Task<IActionResult> Login(AuthModel model)
         {
@@ -93,25 +93,13 @@ namespace Project.Controllers
                 var roles = await _userManager.GetRolesAsync(user);
         
                 // Generate JWT token
-                var token = GenerateJwtToken(user, roles);
+                var response = await GenerateJwtToken(user, roles);
 
-                // Create and populate the response model with user details and token
-                var response = new LoginResponse
-                {
-                    Token = token,
-                    Email = user.Email,
-                    Roles = roles,
-                    FirstName = user.FirstName, // Assuming these fields are part of your User model
-                    LastName = user.LastName
-                    // Populate other fields as necessary
-                };
-
-                return Ok(response); // Return the populated response model
+                return Ok(response);
             }
 
             return Unauthorized("Invalid login attempt.");
         }
-
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
@@ -119,7 +107,8 @@ namespace Project.Controllers
             await _signInManager.SignOutAsync();
             return Ok("Logged out");
         }
-        private string GenerateJwtToken(User user, IList<string> roles)
+
+        private async Task<LoginResponse> GenerateJwtToken(User user, IList<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -145,9 +134,64 @@ namespace Project.Controllers
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            // Generate refresh token
+            var refreshToken = new RefreshToken
+            {
+                UserName = user.Email,
+                Token = GenerateRefreshToken(),
+                ExpiryDate = DateTime.UtcNow.AddDays(7) // Set the expiry date 7 days into the future
+            };
+
+            // Store the refresh token in your database
+            _context.RefreshTokens.Add(refreshToken);
+            await _context.SaveChangesAsync();
+
+            // Add the refresh token to the response
+            var response = new LoginResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                RefreshToken = refreshToken.Token,
+                Email = user.Email,
+                Roles = roles,
+                FirstName = user.FirstName, // Assuming these fields are part of your User model
+                LastName = user.LastName
+                // Populate other fields as necessary
+            };
+
+            return response;
         }
 
-    }
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(RefreshTokenModel model)
+        {
+            // Validate the refresh token
+            var storedRefreshToken = await _context.RefreshTokens.SingleOrDefaultAsync(rt => rt.Token == model.Token);
 
+            if (storedRefreshToken == null)
+            {
+                return BadRequest("Invalid refresh token.");
+            }
+
+            // Check if the token has expired
+            if (storedRefreshToken.ExpiryDate < DateTime.UtcNow)
+            {
+                return BadRequest("Refresh token has expired.");
+            }
+
+            // Generate a new JWT token
+            var user = await _userManager.FindByEmailAsync(storedRefreshToken.UserName);
+            var roles = await _userManager.GetRolesAsync(user);
+            var newToken = await GenerateJwtToken(user, roles);
+
+            return Ok(newToken);
+        }
+
+        private static string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+        }
+    }
 }

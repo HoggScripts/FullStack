@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const CarouselBanner = ({ filterValue }) => {
     const filterDisplay = filterValue.charAt(0).toUpperCase() + filterValue.slice(1); // Capitalizes the first letter for display
 

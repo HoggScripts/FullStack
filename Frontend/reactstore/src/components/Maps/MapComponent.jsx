@@ -1,19 +1,19 @@
-// MapComponent.js
+
 import React from 'react';
 import ReactMapGL, { Marker, Popup } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+
 
 function MapComponent() {
-    // State for the map's viewport settings
+    
     const [viewport, setViewport] = React.useState({
-        latitude: 44.6488,  // Central Halifax latitude
-        longitude: -63.5752, // Central Halifax longitude
+        latitude: 44.6488,  
+        longitude: -63.5752, 
         width: "100vw",
         height: "100vh",
-        zoom: 13           // A closer zoom level to make the store location more prominent
+        zoom: 13          
     });
 
-    // State for tracking the selected store
+
     const [selectedStore, setSelectedStore] = React.useState(null);
 
     return (
@@ -22,13 +22,13 @@ function MapComponent() {
             mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
             onViewportChange={newViewport => setViewport(prevViewport => ({...prevViewport, ...newViewport}))}
             mapStyle="mapbox://styles/mapbox/streets-v11"
-            dragPan={true} // Enable drag to pan
-            touchZoomRotate={true} // Enable pinch to zoom and rotate
-            className="map-container" // Added for possible custom CSS styling
+            dragPan={true} 
+            touchZoomRotate={true} 
+            className="map-container"
         >
             <Marker
-                latitude={44.6425}  // A fictional location within Halifax
-                longitude={-63.5787} // A fictional location within Halifax
+                latitude={44.6425}
+                longitude={-63.5787} 
             >
                 <button
                     className="marker-btn"
@@ -49,7 +49,7 @@ function MapComponent() {
                     onClose={() => {
                         setSelectedStore(null);
                     }}
-                    className="popup" // Added for possible custom CSS styling
+                    className="" 
                 >
                     <div>
                         <h2>{selectedStore}</h2>

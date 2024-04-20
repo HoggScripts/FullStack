@@ -1,4 +1,4 @@
-// AuthProvider.jsx
+
 import React, { useState } from 'react';
 import AuthContext from "../../context/UserContext";
 import UserContext from "../../context/UserContext";

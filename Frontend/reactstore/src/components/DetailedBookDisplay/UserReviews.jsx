@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import reviewsService from '../../services/reviewsService';
-import usersService from "../../services/usersService"; // Assuming this is the correct path
+import usersService from "../../services/usersService";
 
 const UserReviews = ({ book }) => {
     const [reviews, setReviews] = useState([]);
@@ -14,7 +14,7 @@ const UserReviews = ({ book }) => {
             let reviewsWithUser = [];
             try {
                 const response = await reviewsService.getReviewsByBookId(book.bookId);
-                console.log('Received reviews:', response.data); // Log the received reviews
+                console.log('Received reviews:', response.data); 
                 reviewsWithUser = await Promise.all(response.data.map(async review => {
                     if (!review.userId) {
                         console.error('Review does not have a userId:', review);
@@ -74,6 +74,7 @@ const UserReviews = ({ book }) => {
                                 />
                             ))}
                         </div>
+                        
                     </div>
                 </div>
             ))}

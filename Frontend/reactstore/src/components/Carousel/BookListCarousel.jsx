@@ -1,9 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import BookItem from "./BookItem";
 import CarouselBanner from "./CarouselBanner";
 import { useFetch } from '../../hooks/useFetch';
 import booksService from "../../services/booksService";
+import './CarouselButton.css'; 
 
 
 const BookListCarousel = ({ filter }) => {
@@ -13,7 +13,7 @@ const BookListCarousel = ({ filter }) => {
 
     useEffect(() => {
         if (books) {
-            let newFilteredBooks = []; // Assign an empty array as a default value
+            let newFilteredBooks = []; 
             switch (filter.type) {
                 case 'author':
                     newFilteredBooks = books.filter(book => book.authors.map(author => author.toLowerCase()).includes(filter.value.toLowerCase()));
@@ -26,8 +26,8 @@ const BookListCarousel = ({ filter }) => {
                     newFilteredBooks = books;
                     break;
             }
-            const itemsNeeded = 4 - (newFilteredBooks.length % 4);
-            if (itemsNeeded !== 4) {
+            const itemsNeeded = 3 - (newFilteredBooks.length % 3);
+            if (itemsNeeded !== 3) {
                 newFilteredBooks = [...newFilteredBooks, ...newFilteredBooks.slice(0, itemsNeeded)];
             }
             setFilteredBooks(newFilteredBooks);
@@ -39,8 +39,8 @@ const BookListCarousel = ({ filter }) => {
     if (error) return <div className="text-center text-red-500">Error loading books</div>;
 
     const chunks = [];
-    for (let i = 0; i < filteredBooks.length; i += 4) {
-        chunks.push(filteredBooks.slice(i, i + 4));
+    for (let i = 0; i < filteredBooks.length; i += 3) {
+        chunks.push(filteredBooks.slice(i, i + 3));
     }
 
     const handlePrev = () => {
@@ -53,15 +53,13 @@ const BookListCarousel = ({ filter }) => {
 
     return (
         <div id="bookCarousel" className="carousel slide bg-black" data-ride="carousel">
-            <CarouselBanner filterValue={filter.value} /> {/* Pass filter value instead of type */}
             <div className="carousel-inner">
                 {chunks.map((chunk, index) => (
                     <div className={`carousel-item ${index === activeIndex ? 'active' : ''}`} key={index}>
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid grid-cols-3 gap-3">
                             {chunk.map((book, idx) => (
                                 <div className="col-span-1" key={idx}>
                                     <BookItem book={book}/>
-                                    
                                 </div>
                             ))}
                         </div>
@@ -70,18 +68,23 @@ const BookListCarousel = ({ filter }) => {
             </div>
             <button
                 className="carousel-control-prev"
-                onClick={handlePrev}>
-                <span className="text-4xl" aria-hidden="true">‹</span>
+                onClick={handlePrev}
+                aria-hidden="true"
+                style={{border: 'none', background: 'none'}}>
+                <span className="text-8xl">&#8249;</span> 
             </button>
             <button
                 className="carousel-control-next"
-                onClick={handleNext}>
-                <span className="text-4xl" aria-hidden="true">›</span>
+                onClick={handleNext}
+                aria-hidden="true"
+                style={{border: 'none', background: 'none',}}> 
+                <span className="text-8xl">&#8250;</span> 
             </button>
         </div>
-    ); 
-};
+    );
+}
 
 export default BookListCarousel;
+
 
 

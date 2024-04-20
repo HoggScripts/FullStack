@@ -7,7 +7,7 @@ export function ShoppingCartProvider({ children }) {
     const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
 
-    // Load cart from localStorage on component mount
+  
     console.log("Load effect called")
     useEffect(() => {
         const storedCartItems = localStorage.getItem('cartItems');
@@ -22,7 +22,7 @@ export function ShoppingCartProvider({ children }) {
 
 
 
-    // Save cart to localStorage whenever cartItems changes
+    
     useEffect(() => {
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [cartItems]);

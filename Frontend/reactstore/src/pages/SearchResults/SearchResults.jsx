@@ -5,8 +5,7 @@ import SearchResultsList from "../../components/SubHeader/SearchResultsList";
 const SearchResults = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const location = useLocation();
-
-    // Extract the search query from the URL
+    
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const query = params.get('q');

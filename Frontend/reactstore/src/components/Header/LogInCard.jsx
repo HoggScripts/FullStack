@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../context/UserAction';
 import accountsService from '../../services/accountsService';
 import usersService from '../../services/usersService';
-import { Modal, Button, Form } from 'react-bootstrap'; // Import from react-bootstrap
-import { Link } from 'react-router-dom'; // Import from react-router-dom
-// other imports...
+import { Modal, Button, Form } from 'react-bootstrap'; 
+import { Link } from 'react-router-dom'; 
+
 
 const LogInCard = ({ show, onClose, onSuccessfulLogin }) => {
-    const dispatch = useDispatch(); // Get the dispatch function
+    const dispatch = useDispatch(); 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -18,11 +18,11 @@ const LogInCard = ({ show, onClose, onSuccessfulLogin }) => {
             const response = await accountsService.login({ Email: email, Password: password });
             console.log(response.data);
 
-            // Get user data
+      
             const userResponse = await usersService.getUserByEmail(email);
             console.log(userResponse.data);
 
-            // Dispatch the action with the user data
+
             dispatch(loginUser(userResponse.data));
 
             onSuccessfulLogin(response.data, email);

@@ -1,41 +1,54 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import { useShoppingCart } from '../../context/ShoppingCartContext';
 
 const BookItem = ({ book }) => {
     const { addToCart } = useShoppingCart();
 
-    const handleAddToCart = (event) => {
-        event.preventDefault(); // Prevents navigating to the link
+    const handleAddToCart = () => {
         addToCart(book);
     };
 
     return (
-        <div className="max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-            <Link to={`/book/${book.bookId}`} className="block">
-                {/* Image on top */}
-                <div className="flex justify-center items-center bg-gray-100 h-80">
-                    <img
-                        src={`${process.env.PUBLIC_URL}${book.coverImageUrl}`}
-                        alt={book.title}
-                        className="max-w-full h-full object-cover"
-                    />
+        <div className="flex bg-white rounded-lg shadow-lg overflow-hidden h-100 w-100">
+            <div className="book-img w-3/3">
+                <img src={book.coverImageUrl} alt={book.title} className="h-full w-full object-cover object-center"/>
+            </div>
+            <div className="book-content w-2/3 p-4 flex flex-col justify-between">
+                <div>
+                    <div className="book-title text-xl font-semibold mb-2">{book.title}</div>
+                    <div className="book-author text-sm text-gray-600 mb-4">by {book.authors.join(", ")}</div>
+                    <div className="rate flex items-center mb-2">
+                        {[1, 2, 3, 4, 5].map((star, index) => (
+                            <FontAwesomeIcon
+                                key={index}
+                                icon={star <= book.averageRating ? solidStar : regularStar}
+                                className={`mr-1 ${star <= book.averageRating ? 'text-yellow-400' : 'text-gray-400'}`}
+                            />
+                        ))}
+                        <span
+                            className="text-xs text-gray-600 whitespace-nowrap">{book.reviewCount === 1 ? `${book.reviewCount} vote` : `${book.reviewCount} votes`}</span>
+                    </div>
                 </div>
-            </Link>
-
-            {/* Book details, possibly including title if needed */}
-
-            {/* Add to Cart button */}
-            <div className="p-4 bg-black">
-                <button
-                    onClick={handleAddToCart}
-                    className="w-full bg-indigo-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors duration-200 ease-in-out"
-                >
-                    Add to Cart
-                </button>
+                <div>
+                    <div className="book-sum text-gray-800 text-sm mb-4">{book.description}</div>
+                    <Link to={`/book/${book.bookId}`}
+                          className="inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300 ease-in-out">
+                        More Details
+                    </Link>
+                    <button onClick={handleAddToCart}
+                            className="mt-2 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300 ease-in-out">
+                        Add to Cart ${book.price}
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
 
 export default BookItem;
+
+

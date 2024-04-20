@@ -17,6 +17,7 @@ namespace Project.Models
         public DbSet<BookOrder> BookOrders { get; set; } = default!;
         public DbSet<Order> Orders { get; set; } = default!;
         public DbSet<Review> Reviews { get; set; } = default!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

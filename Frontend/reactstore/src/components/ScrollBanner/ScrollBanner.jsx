@@ -1,5 +1,5 @@
 import React from 'react';
-import './ScrollBanner.css'; // Assuming you have an external CSS file
+import './ScrollBanner.css';
 
 const promotions = [
     "Discover the latest Manga!",
@@ -16,7 +16,7 @@ const ScrollBanner = () => {
             setActivePromotionIndex((current) =>
                 current === promotions.length - 1 ? 0 : current + 1
             );
-        }, 3000); // Change phrase every 3 seconds
+        }, 3000); 
 
         return () => clearInterval(interval);
     }, []);
