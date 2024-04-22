@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import HomeHeader from "../../components/Header/HomeHeader";
-import SubHeader from '../../components/SubHeader/SubHeader';
-import ScrollBanner from '../../components/ScrollBanner/ScrollBanner';
-import BookListCarousel from "../../components/Carousel/BookListCarousel";
-import ChangingButton from "../../components/Carousel/ChangingButton";
-import { LabelIndexContext } from "../../context/LabelIndexContext";
+import ScrollBanner from "../../components/HomePage/ScrollBanner/ScrollBanner";
+import BookListCarousel from "../../components/HomePage/Carousel/BookListCarousel";
+import ChangingButton from "../../components/HomePage/Carousel/ChangingButton";
+import { LabelIndexContext } from "../../context/labels/LabelIndexContext";
 
 const HomePage = () => {
     const labels = ['Best Sellers', 'Staff Picks', 'New Release', 'Fantasy', 'Sci-Fi', 'Adventure', 'Romance', 'Mystery', 'Comedy', 'Slice of Life', 'Sports', 'Discounted'];
@@ -32,11 +30,11 @@ const HomePage = () => {
                         <img
                             src={`${process.env.PUBLIC_URL}/1.jpeg`}
                             alt="Otaku Books"
-                            className="w-full bg-black"
+                            className="w-full"
                         />
                         <div
-                            className="absolute bottom-1 w-full bg-black"
-                            style={{transform: 'translateY(-50%)', zIndex: 2}}
+                            className="absolute bottom-1 w-full" // Positioned absolutely
+                            style={{transform: 'translateY(-40%)', zIndex: 2}}
                         >
                             <ScrollBanner/>
                         </div>

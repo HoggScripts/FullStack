@@ -1,0 +1,15 @@
+.carousel-control-prev, .carousel-control-next {
+    color: orange !important;
+    padding: 10px;
+    height: 25px; 
+    width: 30px; 
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+    color: orange !important;
+    border-color: orange;
+}
+
+.carousel-control-prev:active, .carousel-control-next:active {
+    color: orange !important;
+}

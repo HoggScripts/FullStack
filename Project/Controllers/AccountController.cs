@@ -139,7 +139,7 @@ namespace Project.Controllers
             {
                 UserName = user.Email,
                 Token = GenerateRefreshToken(),
-                ExpiryDate = DateTime.UtcNow.AddDays(7) // Set the expiry date 7 days into the future
+                ExpiryDate = DateTime.UtcNow.AddDays(7) 
             };
 
             // Store the refresh token in your database
@@ -153,9 +153,8 @@ namespace Project.Controllers
                 RefreshToken = refreshToken.Token,
                 Email = user.Email,
                 Roles = roles,
-                FirstName = user.FirstName, // Assuming these fields are part of your User model
+                FirstName = user.FirstName,
                 LastName = user.LastName
-                // Populate other fields as necessary
             };
 
             return response;

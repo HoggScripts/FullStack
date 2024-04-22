@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { loadGoogleMapsScript } from '../../utilities/loadGoogleMapsScript';
+import { loadGoogleMapsScript} from "../../services/googlemaps/loadGoogleMapsScript";
 
 const OtakuBooksMap = () => {
     const mapRef = useRef(null);
@@ -34,7 +34,7 @@ const OtakuBooksMap = () => {
 
     return (
         <div style={{ padding: '10rem'}}>
-        <div className="flex">
+        <div className="flex bg-black">
             <div ref={mapRef} style={{ width: '75%', height: '400px' }} />
             <div className="bg-white shadow-lg rounded-lg p-4" style={{ width: '25%', height: '400px' }}>
                 <h2 className="text-lg font-bold">Otaku Books</h2>

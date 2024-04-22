@@ -1,6 +1,6 @@
 import React from 'react';
 import { Offcanvas } from "react-bootstrap";
-import { useShoppingCart } from '../../context/ShoppingCartContext';
+import { useShoppingCart} from "../../hooks/useShoppingCart";
 
 const Cart = () => {
     const { cartItems, closeCart, isCartOpen, removeFromCart } = useShoppingCart();

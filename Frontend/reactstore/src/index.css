@@ -5,9 +5,8 @@
 .dashboard {
     position: fixed; 
     width: 100%; 
-    height: 50px; 
-    background-color: #333; 
-    color: white; 
+    height: 50px;
+    background-color: #000000;
     z-index: 1000; 
     top: 0; 
     left: 0; 
@@ -18,6 +17,7 @@
 .content {
     margin-top: 60px; 
     padding: 20px;
+    background-color: #000000;
 }
 
 
@@ -26,6 +26,7 @@
 }
 
 html, body {
+    background-color: #000000;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -43,6 +44,7 @@ html, body {
     z-index: 1000;
 }
 .content {
+    background-color: #000000;
     padding-top: 75px;
     padding-left: 0;
     padding-right: 0;
