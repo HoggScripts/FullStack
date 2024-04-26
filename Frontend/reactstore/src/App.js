@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import HomePage from "./pages/HomePage/HomePage";
 import AboutUs from "./pages/AboutUs/AboutUs";
-
 import SearchResults from "./pages/SearchResults/SearchResults";
 import DetailedBookItem from "./pages/BookDetails/DetailedBookItem";
 import getStore from "./store/store";
@@ -24,24 +23,21 @@ function App() {
         <Provider store={store}>
             <ShoppingCartProvider>
                 <Router>
-                    <div className="bg-black"> 
+                    <div className="">
                         <div className="header">
                             <HomeHeader/>
                             <SubHeader/>
                         </div>
-                        <div className="content bg-black">
-                            <Routes className="content bg-black">
-
-                                <Route path="" element={<HomePage/>}/>
-                                <Route path="/aboutus" element={<AboutUs/>}/>
-                                <Route path="/locations" element={<OtakuBooksMap/>}/>
-                                <Route path="/signup" element={<SignUpForm/>}/>
-                                <Route path="/search/*" element={<SearchResults/>}/>
-                                <Route path="/book/:bookId" element={<DetailedBookItem/>}/>
-                                <Route path="/profile" element={<UserProfile/>}/> 
-                            </Routes>
-                            <Cart/>
-                        </div>
+                        <Routes>
+                            <Route path="" element={<div className="content"><HomePage/></div>}/>
+                            <Route path="/aboutus" element={<div className="content"><AboutUs/></div>}/>
+                            <Route path="/locations" element={<div className="content"><OtakuBooksMap/></div>}/>
+                            <Route path="/signup" element={<div className="content"><SignUpForm/></div>}/>
+                            <Route path="/search/*" element={<div className="content"><SearchResults/></div>}/>
+                            <Route path="/book/:bookId" element={<div className="content"><DetailedBookItem/></div>}/>
+                            <Route path="/profile" element={<UserProfile/>}/>
+                        </Routes>
+                        <Cart/>
                     </div>
                 </Router>
             </ShoppingCartProvider>

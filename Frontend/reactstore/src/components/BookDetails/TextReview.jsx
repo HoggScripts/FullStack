@@ -25,7 +25,7 @@ const TextReview = ({ review = { headline: '', reviewText: '' }, onReviewChange,
                     onChange={e => onReviewChange({ ...review, reviewText: e.target.value })}
                 />
                 <div className="text-right text-sm text-gray-500 mb-2">{reviewText.split(' ').filter(Boolean).length} / 100 words</div>
-                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                <button type="submit" className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
                     Submit Review
                 </button>
             </form>

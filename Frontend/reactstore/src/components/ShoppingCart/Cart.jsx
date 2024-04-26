@@ -3,7 +3,7 @@ import { Offcanvas } from "react-bootstrap";
 import { useShoppingCart} from "../../hooks/useShoppingCart";
 
 const Cart = () => {
-    const { cartItems, closeCart, isCartOpen, removeFromCart } = useShoppingCart();
+    const { cartItems, closeCart, isCartOpen, removeFromCart, checkout } = useShoppingCart();
 
   
     const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
@@ -53,9 +53,9 @@ const Cart = () => {
                                 <span>${total.toFixed(2)}</span>
                             </div>
                             <button
-                                onClick={() => console.log("Proceed to Checkout")}
+                                onClick={checkout}
                                 className="w-full bg-blue-500 text-white py-2 mt-4 rounded hover:bg-blue-600 transition-colors">
-                                Proceed to Checkout
+                                Confirm Order
                             </button>
                         </div>
                     </>

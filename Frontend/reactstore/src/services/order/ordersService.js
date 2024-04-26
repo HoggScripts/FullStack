@@ -11,6 +11,8 @@ const getOrderById = (id) => {
 };
 
 const createOrder = (newOrder) => {
+    const newOrderStringified = JSON.stringify(newOrder);
+    console.log(newOrderStringified);
     return axios.post(API_URL, newOrder);
 };
 

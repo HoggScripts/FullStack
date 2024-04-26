@@ -4,33 +4,28 @@ import LogInButton from './LogInButton';
 import LogOutButton from './LogOutButton';
 import { loginUser, logoutUser } from "../../../context/users/UserAction";
 import usersService from "../../../services/user/usersService";
+import { logTokenExpirationTime } from "../../../Utility/tokenUtils";
 
 const AuthenticationControl = ({ className }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
 
     const handleSuccessfulLogin = (userData, email) => {
-        // Assuming userData contains your token information
         if (userData.token) {
-            // Store the token in localStorage
             localStorage.setItem('token', userData.token);
+            logTokenExpirationTime(userData.token); 
 
-            // Optional: Store the refresh token if it's part of your login response
             if (userData.refreshToken) {
                 localStorage.setItem('refreshToken', userData.refreshToken);
             }
-
-            // Log the token setup for debugging
             console.log('Token set in localStorage:', localStorage.getItem('token'));
         } else {
             console.error('No token in userData', userData);
-            return; // Early return if no token, to prevent further execution
+            return;
         }
 
-        // Now fetch user details by email
         usersService.getUserByEmail(email)
             .then(response => {
-                // Dispatch login action with user data
                 dispatch(loginUser(response.data));
             })
             .catch(error => {
@@ -38,16 +33,13 @@ const AuthenticationControl = ({ className }) => {
             });
     };
 
-
-
     const handleLogOut = () => {
         try {
             localStorage.removeItem('user');
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
             dispatch(logoutUser());
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Error logging out', error);
         }
     };

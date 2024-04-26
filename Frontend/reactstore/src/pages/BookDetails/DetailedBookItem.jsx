@@ -12,8 +12,10 @@ const DetailedBookItem = () => {
     const navigate = useNavigate();
     const user = useSelector(state => state.user);
 
+    const userId = user ? user.id : null; // Add this line
+
     const { book, loading } = useBookDetails(bookId);
-    const { review, handleReviewChange, handleSubmitReview } = useReviewSubmit(bookId, user.id, navigate);
+    const { review, handleReviewChange, handleSubmitReview } = useReviewSubmit(bookId, userId, navigate); // Modify this line
     const { addToCart } = useShoppingCart();
 
     if (loading) {
@@ -29,7 +31,6 @@ const DetailedBookItem = () => {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-                <BookHeader book={book} />
                 <BookDetails
                     book={book}
                     handleAddToCart={() => addToCart(book)}

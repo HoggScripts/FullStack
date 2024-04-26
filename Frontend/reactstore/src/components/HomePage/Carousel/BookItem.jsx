@@ -37,11 +37,11 @@ const BookItem = ({ book }) => {
                 <div>
                     <div className="book-sum text-gray-800 text-sm mb-4 z-5">{book.description}</div>
                     <Link to={`/book/${book.bookId}`}
-                          className="inline-block bg-orange-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300 ease-in-out z-10">
+                          className="inline-block bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 transition-colors duration-300 ease-in-out z-10">
                         More Details
                     </Link>
                     <button onClick={handleAddToCart} 
-                            className="mt-2 inline-block bg-indigo-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300 ease-in-out z-10">
+                            className="mt-2 inline-block bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600 transition-colors duration-300 ease-in-out z-10">
                         Add to Cart ${book.price}
                     </button>
                 </div>
